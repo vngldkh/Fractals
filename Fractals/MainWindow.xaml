@@ -1,0 +1,238 @@
+﻿<Window x:Class="Fractals.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Fractals"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="900" Background="#FF211F1F" SizeChanged="Window_SizeChanged" ResizeMode="CanResizeWithGrip" MinWidth="900" MinHeight="600">
+    <Grid x:Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="2*"/>
+            <RowDefinition Height ="13*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer x:Name="ScrollViewer" Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#FFF0F0F0" Foreground="Black" Margin="0,0,15,15" HorizontalAlignment="Stretch">
+            <Canvas x:Name="FractalCanvas" Background="#FFF0F0F0">
+                <Canvas.LayoutTransform >
+                    <TransformGroup>
+                        <ScaleTransform x:Name="ScaleTransform" CenterX="0" CenterY="0" ScaleX="1" ScaleY="1"></ScaleTransform>
+                    </TransformGroup>
+                </Canvas.LayoutTransform>
+            </Canvas>
+        </ScrollViewer>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="15*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="ScaleTextBox" Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                Scale:
+            </TextBlock>
+            <Slider x:Name="Scale" Grid.Row="1" Grid.Column="2" ValueChanged="Scale_ValueChanged" Minimum="1" Maximum="5" Margin="0, 0, 15, 0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="TypeTextBox" Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                Fractal type
+            </TextBlock>
+            <ComboBox x:Name="FractalTypeCB" Grid.Row="1" Grid.Column="0" Height="30"  Margin="0, 5, 15, 5" FontFamily="Copperplate Gothic" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="FractalTypeCB_SelectionChanged">
+                <TextBlock>
+                    Fractal tree
+                </TextBlock>
+                <TextBlock>
+                    Serpinsky Carpet
+                </TextBlock>
+                <TextBlock>
+                    Serpinsky triangle
+                </TextBlock>
+                <TextBlock>
+                    Cantor's set
+                </TextBlock>
+                <TextBlock>
+                    Koch curve
+                </TextBlock>
+            </ComboBox>
+            <TextBlock x:Name="DepthTextBox" Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                Depth:
+            </TextBlock>
+            <TextBlock Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-15, 0, 0, 0">
+                Draw
+            </TextBlock>
+            <Button x:Name="DrawButton" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" HorizontalAlignment="Stretch"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Click="Draw_Click" Margin="0, 0, 15, 0"/>
+            <Slider x:Name="Depth" Grid.Row="1" Grid.Column="1" Minimum="-1" Maximum="-1" Margin="0, 0, 15, 0" VerticalAlignment="Center" ValueChanged="Depth_ValueChanged" Value="10"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+
+            </Grid.RowDefinitions>
+            <Image Source="/Kaneki.png" Grid.Row="5" Margin="0, -90, 0, 0" HorizontalAlignment="Left"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse x:Name="EndColorDisplay" Margin="10, 5, 10, 5" Fill="Black"></Ellipse>
+                    <Label Content="R" Grid.Column="1" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="EndColorR" Grid.Column="2" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="EndColorR_TextChanged"/>
+                    <Label Content="G" Grid.Column="3" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="EndColorG" Grid.Column="4" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="EndColorG_TextChanged" Text=""/>
+                    <Label Content="B" Grid.Column="5" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="EndColorB" Grid.Column="6" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="EndColorB_TextChanged"/>
+                </Grid>
+                <TextBlock Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    End color
+                </TextBlock>
+            </Grid>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="FirstAdditionTextBlock" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="SecondAdditionTextBlock" Grid.Column="1" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <Slider x:Name="FirstAdditionSlider" Grid.Row="1" Margin="10, 0, 5, 0" VerticalAlignment="Center" Visibility="Hidden" ValueChanged="FirstAdditionSlider_ValueChanged"></Slider>
+                <Slider x:Name="SecondAdditionSlider" Grid.Row="1" Grid.Column="1" Margin="10, 0, 5, 0" VerticalAlignment="Center" Visibility="Hidden" ValueChanged="SecondAdditionSlider_ValueChanged"></Slider>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="ThirdAdditionTextBlock" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <Slider x:Name="ThirdAdditionSlider" Grid.Row="1" Grid.Column="0" Margin="10, 0, 5, 0" VerticalAlignment="Center" Visibility="Hidden" ValueChanged="ThirdAdditionSlider_ValueChanged"></Slider>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="FourthAdditionTextBlock" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <Slider x:Name="FourthAdditionSlider" Grid.Row="1" Grid.Column="0" Margin="10, 0, 5, 0" VerticalAlignment="Center" Visibility="Hidden" ValueChanged="FourthAdditionSlider_ValueChanged"></Slider>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse x:Name="BackColorDisplay" Visibility="Hidden" Margin="10, 5, 10, 5" Fill="Black"></Ellipse>
+                    <Label x:Name="LabelR" Visibility="Hidden" Content="R" Grid.Column="1" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="BackColorR" Visibility="Hidden" Grid.Column="2" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="BackColorR_TextChanged"/>
+                    <Label x:Name="LabelG" Visibility="Hidden" Content="G" Grid.Column="3" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="BackColorG" Visibility="Hidden" Grid.Column="4" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="BackColorG_TextChanged" />
+                    <Label x:Name="LabelB" Content="B" Visibility="Hidden" Grid.Column="5" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                    <TextBox x:Name="BackColorB" Visibility="Hidden" Grid.Column="6" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="BackColorB_TextChanged" />
+                </Grid>
+                <TextBlock x:Name="BackTextBlock" Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
+                    Background color
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    Save
+                </TextBlock>
+                <Button Grid.Column="1" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" HorizontalAlignment="Stretch"  VerticalAlignment="Center" Margin="5, 0, 5, 0" Click="Button_Click"></Button>
+            </Grid>
+        </Grid>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Ellipse x:Name="FirstColorDisplay" Margin="10, 5, 10, 5" Fill="Black"></Ellipse>
+                <Label Content="R" Grid.Column="1" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <TextBox x:Name="FirstColorR" Grid.Column="2" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="RTB_TextChanged"/>
+                <Label Content="G" Grid.Column="3" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <TextBox x:Name="FirstColorG" Grid.Column="4" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="GTB_TextChanged" Text=""/>
+                <Label Content="B" Grid.Column="5" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <TextBox x:Name="FirstColorB" Grid.Column="6" Height="{Binding ElementName=FractalTypeCB, Path=ActualHeight}" Margin="5" FontFamily="Copperplate Gothic" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="RTB_PreviewTextInput" TextChanged="BTB_TextChanged"/>
+            </Grid>
+            <TextBlock Margin="-15, 0, 0, 0" Foreground="#FFF0F0F0" FontFamily="Copperplate Gothic Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                Start color
+            </TextBlock>
+           
+        </Grid>
+
+        
+    </Grid>
+</Window>
